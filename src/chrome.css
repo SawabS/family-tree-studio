@@ -21,3 +21,10 @@ html,body{background:var(--page);color:var(--ink)}.app{position:relative;isolati
 @media(min-width:761px) and (max-width:1180px){.app{grid-template-columns:minmax(0,1fr)}.canvas-shell{grid-column:1;grid-row:2}.sidebar,.inspector{position:fixed;top:var(--header-height);bottom:0;height:calc(var(--app-height,100dvh) - var(--header-height));width:min(400px,100%);z-index:12;border-radius:18px 18px 0 0;visibility:hidden;pointer-events:none}.sidebar{left:0;transform:translateX(-102%)}.inspector{right:0;transform:translateX(102%)}.sidebar.open,.inspector.open{visibility:visible;pointer-events:auto;transform:translateX(0)}.mobile-overlay{z-index:11}.app .topbar{z-index:13}}
 @media(max-width:1180px){.sidebar.open{transform:translateX(calc(-1 * var(--swipe,0px)))}.inspector.open{transform:translateX(var(--swipe,0px))}.panel-head{background:var(--panel)}}
 @media(prefers-reduced-transparency:reduce),(prefers-contrast:more){.app .topbar,.sidebar,.inspector,.float-tools,.canvas-label,.mini,.board-actions .iconbtn{background:var(--panel)!important;backdrop-filter:none;-webkit-backdrop-filter:none;border-color:var(--line)}}
+
+/* Phone panels occupy every pixel; tablets retain their floating drawers. */
+@media(max-width:760px){
+ .sidebar,.inspector{inset:0;width:100%;max-width:none;height:var(--app-height,100dvh);max-height:none;z-index:14;border:0;border-radius:0;padding-top:calc(16px + env(safe-area-inset-top,0px));box-shadow:none}
+ .sidebar .panel-head,.inspector .panel-head{top:calc(-16px - env(safe-area-inset-top,0px));padding-top:calc(12px + env(safe-area-inset-top,0px));min-height:calc(64px + env(safe-area-inset-top,0px))}
+ .inspector .tabs{top:calc(48px + env(safe-area-inset-top,0px))}
+}

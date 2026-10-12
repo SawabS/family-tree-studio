@@ -3,10 +3,14 @@ test('DOM integration: startup, creation, profile, relations, undo, backup migra
   const html=await readFile(new URL('../index.html',import.meta.url),'utf8');const dom=new JSDOM(html,{url:'https://example.test/family-tree-studio/'}),w=dom.window;
   for(const key of ['window','document','DOMParser','FormData','Event','FileReader','Blob','localStorage'])globalThis[key]=key==='window'?w:w[key];
   Object.defineProperty(globalThis,'navigator',{configurable:true,value:w.navigator});globalThis.indexedDB=indexedDB;globalThis.requestAnimationFrame=fn=>fn();globalThis.CSS={escape:s=>s.replace(/["\\]/g,'\\$&')};w.HTMLDialogElement.prototype.showModal=function(){this.setAttribute('open','')};w.HTMLDialogElement.prototype.close=function(){this.removeAttribute('open')};globalThis.confirm=()=>true;
+  Object.defineProperty(w,'innerWidth',{value:375,writable:true});
   const $=s=>w.document.querySelector(s),click=s=>$(s).click(),change=(s,value,event='change')=>{$(s).value=value;$(s).dispatchEvent(new w.Event(event,{bubbles:true}))},submit=s=>$(s).dispatchEvent(new w.Event('submit',{bubbles:true,cancelable:true}));
   await import('../src/app.js');
   assert.ok(!$('#emptyBoard').classList.contains('hidden'));assert.equal(w.document.querySelectorAll('.node').length,0);assert.ok(!html.includes('Taher'));
   click('#emptyAdd');change('#personDialog input','Example A');submit('#personDialog form');assert.equal(w.document.querySelectorAll('.node').length,1);
+  assert.ok($('#rightPanel').hasAttribute('inert'),'phone creation keeps profile closed');assert.ok($('#leftPanel').hasAttribute('inert'),'phone creation returns to canvas');assert.equal(document.activeElement.id,'viewport');
+  $('.node').dispatchEvent(new w.KeyboardEvent('keydown',{key:'Enter',bubbles:true}));assert.ok(!$('#rightPanel').hasAttribute('inert'),'explicit selection opens profile');
+  w.innerWidth=1366;w.dispatchEvent(new w.Event('resize'));
   change('[data-edit="birthPlace"]','Example location','input');assert.equal($('[data-edit="birthPlace"]').value,'Example location');
   change('[data-edit="biographyMarkdown"]','**Biography** <img src=x onerror=alert(1)> [unsafe](javascript:alert(1))','input');assert.ok($('.markdown strong'));assert.equal($('.markdown img'),null);assert.equal($('.markdown a').hasAttribute('href'),false);
   change('#customKey','Research note');change('#customValue','Example value');click('#customAdd');assert.ok($('#panelContent').textContent.includes('Example value'));
