@@ -4,9 +4,10 @@ A local-first genealogical whiteboard. This project extends the supplied editor 
 
 ## Run
 
-Node 22 or newer. No dependency installation required.
+Node 22 or newer. Run npm ci for the automated DOM and persistence tests. The app bundles its browser dependencies and does not load a CDN.
 
 ```sh
+npm ci
 npm test
 npm run build
 npm run dev

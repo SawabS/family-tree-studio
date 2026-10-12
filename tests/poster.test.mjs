@@ -1,0 +1,7 @@
+import test from 'node:test';import assert from 'node:assert/strict';import {plan,preview} from '../src/poster.js';import {emptyTree,profileDefaults} from '../src/model.js';
+const v=emptyTree();v.people=[{id:'x',name:'Example <record>',gender:'unknown',parents:[],profile:profileDefaults(),position:{x:-300,y:-200}}];
+const options={paper:'A4',orientation:'portrait',margin:15,fontSize:15,scaling:'fit',scale:100,font:'sans-serif',title:'Private <title>'};
+test('all eight formats fit a single page with correct ISO geometry',()=>{for(const paper of ['A1','A2','A3','A4'])for(const orientation of ['portrait','landscape']){const p=plan(v,{...options,paper,orientation});assert.equal(p.count,1);assert.ok(orientation==='portrait'?p.h>p.w:p.w>p.h)}});
+test('tiled scaling creates multiple pages',()=>{const tree=structuredClone(v);tree.people[0].position.x=0;tree.people.push({...tree.people[0],id:'y',position:{x:3000,y:2000}});assert.ok(plan(tree,{...options,scaling:'tiles'}).count>1)});
+test('preview escapes private text and clips all page content',()=>{const r=preview(v,options);assert.ok(r.pages[0].includes('Private &lt;title&gt;'));assert.ok(r.pages[0].includes('clipPath'));assert.ok(!r.pages[0].includes('Example <record>'))});
+test('invalid margins and excessive pagination are rejected',()=>{assert.throws(()=>plan(v,{...options,margin:NaN}));const tree=structuredClone(v);tree.people.push({...tree.people[0],id:'y',position:{x:100000,y:100000}});assert.throws(()=>plan(tree,{...options,scaling:'tiles'}),/100 pages/)});

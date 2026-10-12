@@ -4,6 +4,7 @@ export const isParent = r => !['partner','spouse'].includes(r.type);
 export const profileDefaults = () => ({preferredName:'',birthDate:'',deathDate:'',birthPlace:'',residence:'',occupation:'',email:'',phone:'',biographyMarkdown:'',notesMarkdown:'',customFields:{},photoDataUrl:'',attachments:[],references:[]});
 export function emptyTree() { return {schemaVersion:1,treeId:crypto.randomUUID(),title:'My family tree',people:[],relationships:[],settings:{cardWidth:194,cardHeight:86}}; }
 const bad = message => {throw new Error(message)};
+const validDate=value=>{if(!/^\d{4}-\d{2}-\d{2}$/.test(value))return false;const date=new Date(value+'T00:00:00Z');return Number.isFinite(date.getTime())&&date.toISOString().slice(0,10)===value};
 const text = v => typeof v === 'string';
 const safeID = v => text(v) && v.length > 0 && v.length <= 160 && !['__proto__','prototype','constructor'].includes(v);
 export function validate(doc) {
@@ -24,7 +25,7 @@ export function validate(doc) {
     if(!Array.isArray(p.profile.attachments)) bad('Invalid attachments');
     const assetIDs=new Set();
     for(const a of p.profile.attachments){if(!safeID(a.id)||assetIDs.has(a.id)||!text(a.name)||!text(a.dataUrl)||!/^data:[\w.+/-]+;base64,[A-Za-z0-9+/=]*$/.test(a.dataUrl))bad('Invalid attachment');assetIDs.add(a.id)}
-    for(const key of ['birthDate','deathDate']) if(p.profile[key]&&!/^\d{4}-\d{2}-\d{2}$/.test(p.profile[key]))bad('Use ISO dates (YYYY-MM-DD)');
+    for(const key of ['birthDate','deathDate']) if(p.profile[key]&&!validDate(p.profile[key]))bad('Use ISO dates (YYYY-MM-DD)');
     if(p.profile.birthDate&&p.profile.deathDate&&p.profile.birthDate>p.profile.deathDate)bad('Death cannot precede birth');
   }
   const seen=new Set();

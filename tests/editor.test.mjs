@@ -1,0 +1,24 @@
+import test from 'node:test';import assert from 'node:assert/strict';import {readFile} from 'node:fs/promises';import {JSDOM} from 'jsdom';import {indexedDB} from 'fake-indexeddb';
+test('DOM integration: startup, creation, profile, relations, undo, backup migration, privacy and Markdown',async()=>{
+  const html=await readFile(new URL('../index.html',import.meta.url),'utf8');const dom=new JSDOM(html,{url:'https://example.test/family-tree-studio/'}),w=dom.window;
+  for(const key of ['window','document','DOMParser','FormData','Event','FileReader','Blob','localStorage'])globalThis[key]=key==='window'?w:w[key];
+  Object.defineProperty(globalThis,'navigator',{configurable:true,value:w.navigator});globalThis.indexedDB=indexedDB;globalThis.requestAnimationFrame=fn=>fn();globalThis.CSS={escape:s=>s.replace(/["\\]/g,'\\$&')};w.HTMLDialogElement.prototype.showModal=function(){this.setAttribute('open','')};w.HTMLDialogElement.prototype.close=function(){this.removeAttribute('open')};globalThis.confirm=()=>true;
+  const $=s=>w.document.querySelector(s),click=s=>$(s).click(),change=(s,value,event='change')=>{$(s).value=value;$(s).dispatchEvent(new w.Event(event,{bubbles:true}))},submit=s=>$(s).dispatchEvent(new w.Event('submit',{bubbles:true,cancelable:true}));
+  await import('../src/app.js');
+  assert.ok(!$('#emptyBoard').classList.contains('hidden'));assert.equal(w.document.querySelectorAll('.node').length,0);assert.ok(!html.includes('Taher'));
+  click('#emptyAdd');change('#personDialog input','Example A');submit('#personDialog form');assert.equal(w.document.querySelectorAll('.node').length,1);
+  change('[data-edit="birthPlace"]','Example location','input');assert.equal($('[data-edit="birthPlace"]').value,'Example location');
+  change('[data-edit="biographyMarkdown"]','**Biography** <img src=x onerror=alert(1)> [unsafe](javascript:alert(1))','input');assert.ok($('.markdown strong'));assert.equal($('.markdown img'),null);assert.equal($('.markdown a').hasAttribute('href'),false);
+  change('#customKey','Research note');change('#customValue','Example value');click('#customAdd');assert.ok($('#panelContent').textContent.includes('Example value'));
+  click('#addPerson');change('#personDialog input','Example B');submit('#personDialog form');assert.equal(w.document.querySelectorAll('.node').length,2);
+  const nodes=[...w.document.querySelectorAll('.node')],a=nodes[0].dataset.node,b=nodes[1].dataset.node;
+  click('[data-tab="relationships"]');change('#relationPerson',a);change('#relationType','adoptive');click('#linkRelation');assert.ok($('#panelContent').textContent.includes('Adoptive parent'));
+  click('[data-tab="data"]');let data=JSON.parse($('#liveJson').textContent);assert.equal(data.schemaVersion,2);assert.equal(Object.keys(data.people).length,2);assert.equal(Object.values(data.relationships)[0].type,'adoptive');
+  click(`#peopleList [data-person="${a}"]`);click('[data-tab="relationships"]');change('#relationPerson',b);click('#linkRelation');assert.ok($('#toast').textContent.includes('cycle'));
+  click('[data-tab="data"]');data=JSON.parse($('#liveJson').textContent);assert.equal(Object.keys(data.relationships).length,1);
+  click('#undoTop');click('[data-tab="data"]');data=JSON.parse($('#liveJson').textContent);assert.equal(Object.keys(data.relationships).length,0);
+  click('#redoFloat');click('[data-tab="data"]');data=JSON.parse($('#liveJson').textContent);assert.equal(Object.keys(data.relationships).length,1);
+  change('#treeTitle','Example poster');assert.equal($('#treeTitle').value,'Example poster');click('#posterBtn');assert.equal($('#posterDialog').hasAttribute('open'),true);assert.ok($('#posterPreview svg'));assert.ok($('#posterSummary').textContent.includes('1 page'));
+  const {read}=await import('../src/storage.js');for(let i=0;i<20;i++){const saved=await read();if(saved?.title==='Example poster')break;await new Promise(r=>setTimeout(r,10))}assert.equal((await read()).title,'Example poster');
+  dom.window.close();
+});
