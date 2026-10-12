@@ -1,0 +1,30 @@
+/* Generation colours, branch highlight and energy flow. Loaded after chrome.css so these rules win. */
+:root{--flow:#8df2c0;--flow-soft:#8df2c066;--flow-glow:#8df2c0b3;--branch-line:#5fd9a4;--arrive-peak:0 0 0 3px #8df2c0cc,0 0 30px 4px #8df2c0aa;--arrive-rest:0 0 0 2px #8df2c066,0 0 12px #8df2c055}
+:root[data-theme="light"]{--flow:#12a56b;--flow-soft:#12a56b66;--flow-glow:#12a56bb3;--branch-line:#1a8a5c;--arrive-peak:0 0 0 3px #12a56bcc,0 0 28px 4px #12a56b99;--arrive-rest:0 0 0 2px #12a56b66,0 0 12px #12a56b44}
+
+/* Cards: dark forest green for the oldest generation, lighter greens deeper in the tree. */
+#nodes .node{background:var(--gen-bg,var(--card));color:var(--gen-ink,var(--ink));border-color:color-mix(in srgb,var(--gen-ink,var(--ink)) 24%,var(--gen-bg,var(--card)))}
+#nodes .node .name{color:var(--gen-ink,var(--ink))}
+#nodes .node .hint{color:var(--gen-muted,var(--muted))}
+#nodes .node .avatar,#nodes .node .avatar.female{background:var(--gen-avatar,var(--surface));color:var(--gen-ink,var(--muted));box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--gen-ink,var(--ink)) 28%,transparent)}
+#nodes .node .handle{border-color:var(--gen-bg,var(--card))}
+
+/* Selected person and the descendants that light up with them. */
+#nodes .node.selected{border-color:var(--flow);box-shadow:0 0 0 3px var(--flow-soft),0 0 24px var(--flow-glow)}
+#nodes .node.in-branch{border-color:var(--flow);box-shadow:var(--arrive-rest);animation:kin-arrive var(--flow-cycle,3s) linear infinite;animation-delay:var(--arrive-delay,0s)}
+#nodes .node.in-branch.dragging{animation:none}
+
+/* Lines inside the branch: one solid curve with a soft halo and a pulse of light travelling parent to child. */
+.links .dimmed{opacity:.55}
+.links .branch-halo,.links .branch-line,.links .branch-pulse{fill:none;stroke-linecap:round;stroke-linejoin:round}
+.links .branch-halo{stroke:var(--flow);stroke-opacity:.2;stroke-width:10}
+.links .branch-line{stroke:var(--branch-line);stroke-width:4}
+.links .branch-pulse{stroke:var(--flow);stroke-width:6;stroke-dasharray:14 1000;stroke-dashoffset:14;filter:drop-shadow(0 0 4px var(--flow));animation:kin-flow var(--flow-cycle,3s) linear infinite}
+
+/* Reduced motion keeps the bold solid highlight but removes every moving part. */
+@media(prefers-reduced-motion:reduce){.links .branch-pulse{display:none}#nodes .node.in-branch{animation:none}}
+
+/* Poster dialog: the photograph opt-in sits inline with its checkbox. */
+.field.check{display:flex;align-items:center;gap:10px;font-weight:500}
+.field.check input{width:auto;min-height:0;flex:0 0 auto}
+.poster-layout .photo-hint{margin:-4px 0 4px;text-align:left}
