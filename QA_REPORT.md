@@ -10,7 +10,7 @@ Profile keyboard/focus repair, mobile and laptop functional flows, responsive la
 
 ## Code review and fixes
 
-- src/app.js:31 — invalid-field blur previously called global Undo and rebuilt the inspector; replaced by field-local validation and retention of the last valid value.
+- src/app.js / src/profile-fields.js — invalid-field blur previously called global Undo and rebuilt the inspector; replaced by field-local validation and retention of the last valid value.
 - src/chrome.js — visual viewport height changes previously reapplied panel state; height-only events now change dimensions without touching panel attributes or focus.
 - src/app.js — profile fields now include names, autocomplete policy, name capitalization and next-key hints.
 - src/app.js — keyboard shortcuts now respect consumed events and IME composition; sidebar resizing no longer moves a selected card.
@@ -36,7 +36,7 @@ Published Chromium checks completed with two explicitly synthetic QA records:
 
 The header inspector icon is now a minimal person outline, with no visible button box. Keyboard focus indication and accessible labeling remain.
 
-The poster-preview fix and minimal icon were verified in the published app: invalid margin clears all preview pages and disables export; the header icon has no rectangle, transparent background and transparent border. The A2 landscape PDF downloaded successfully; its contents were inspected and contact details were excluded. A narrow laptop-canvas overlap between minimap and toolbar was found; the minimap is now above the toolbar and resizing preserves at least 320px of canvas. Added a ten-step visualViewport keyboard-animation regression test, preserving focus, selection and panel markup at each step. Final cleanup and layout recheck follow this last adjustment.
+The poster-preview fix and minimal icon were verified in the published app: invalid margin clears all preview pages and disables export; the header icon has no rectangle, transparent background and transparent border. The A2 landscape PDF downloaded successfully; its contents were inspected and contact details were excluded. A narrow laptop-canvas overlap between minimap and toolbar was found; the minimap is now above the toolbar and resizing preserves at least 320px of canvas. Added a ten-step visualViewport keyboard-animation regression test, preserving focus, selection and panel markup at each step. Final recheck passed: at 1280px, the 530px canvas contains the complete toolbar and the minimap is above it. The settled 844px layout reserves a 320px canvas (200px people sidebar, 324px inspector). Both QA records and the final screenshot-only record were removed through recoverable application actions; the active board is empty again. GitHub Pages deployments succeeded for 4f4b2c3. The saved proof screenshot shows the laptop name field focused with the minimal header icon. Browser download-event observation timed out, but the resulting JSON/PDF files were inspected from the synchronized download directory and confirmed to contain only synthetic QA records.
 
 ## Qualification limits
 
