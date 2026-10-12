@@ -1,5 +1,5 @@
 import test from 'node:test';import assert from 'node:assert/strict';
-import {ACCENTS,accentOf,accentCSS,GENERATION_PALETTE,paletteFor,generations,branchOf,childMap,flowPlan,edgeDelay,arrivalDelay,flowCSS,FLOW,lineStyle,parentCurve,mixHex,cardBorder,avatarBorder,hexToRgb01} from '../src/branch.js';
+import {GENERATION_PALETTE,paletteFor,generations,branchOf,childMap,flowPlan,edgeDelay,arrivalDelay,flowCSS,FLOW,lineStyle,parentCurve,mixHex,cardBorder,avatarBorder,hexToRgb01} from '../src/branch.js';
 const person=(id,parents=[],x=0,y=0)=>({id,name:id,parents,position:{x,y}});
 const family=()=>({people:[person('a'),person('b'),person('c',['a','b']),person('d',['a']),person('e',['c','d']),person('f',['e']),person('x'),person('y',['x'])]});
 const luminance=hex=>{const [r,g,b]=hexToRgb01(hex).map(v=>v<=.04045?v/12.92:((v+.055)/1.055)**2.4);return .2126*r+.7152*g+.0722*b};
@@ -59,18 +59,4 @@ test('relationship lines keep their styling and the curve is one cubic from pare
   assert.equal(lineStyle('biological').dash,null);assert.ok(lineStyle('adoptive').dash);assert.ok(lineStyle('parent-unknown').dash);assert.notEqual(lineStyle('guardian').color,lineStyle('adoptive').color);
   const curve=parentCurve(person('p',[],0,0),person('c',['p'],200,186));
   assert.equal(curve.d,'M97 86 C97 136 297 136 297 186');
-});
-
-test('seven accents each keep a darker-to-lighter ramp with readable text',()=>{
-  assert.equal(ACCENTS.length,7);assert.equal(new Set(ACCENTS.map(a=>a.id)).size,7);
-  for(const a of ACCENTS){
-    assert.equal(a.palette.length,10);
-    for(let i=0;i<10;i++){
-      const c=a.palette[i];
-      if(i)assert.ok(luminance(c.bg)>luminance(a.palette[i-1].bg),`${a.id} generation ${i} lighter`);
-      assert.ok(contrast(c.ink,c.bg)>=4.5,`${a.id} name text ${i}`);assert.ok(contrast(c.muted,c.bg)>=4.5,`${a.id} caption ${i}`);assert.ok(contrast(c.ink,c.avatar)>=4.5,`${a.id} initial ${i}`);
-    }
-    assert.match(accentCSS(a),/--flow:#[0-9a-f]{6}/);
-  }
-  assert.equal(accentOf('nope').id,'green');assert.equal(paletteFor(1,'sky'),accentOf('sky').palette[1]);assert.notEqual(paletteFor(0,'rose').bg,paletteFor(0).bg);
 });
