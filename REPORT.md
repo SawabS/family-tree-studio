@@ -66,3 +66,9 @@ Published Chrome verification: both desktop panels closed and reopened; a pointe
 ## Fullscreen phone panels and canvas-first creation
 
 At phone widths (up to 760px), both panels now occupy the entire visual viewport, including the header area, with no corner radius, border or 400px width cap. Close controls remain in the panel header and safe-area padding protects them. Tablet and desktop panel layouts are retained. Adding a person on a phone closes any open panel and focuses the canvas; opening the profile requires an explicit card/list/inspector action. The DOM integration test now checks phone creation stays on the canvas and Enter on the card opens the profile. All 27 tests and the allowlisted build pass.
+
+## Docked, resizable sidebars and IBM Plex typography
+
+Above 760px, the people sidebar is attached to the left edge and inspector to the right edge. They occupy grid columns rather than overlap the canvas. Closing frees their width; reopening restores it. Inner-edge separators support pointer resizing and Left/Right arrow keys (Shift for larger increments, Home for default widths). Widths are bounded to preserve canvas space and saved locally. All header dragging and swipe movement were removed. Phone panels retain full-viewport coverage and canvas-first person creation.
+
+English uses IBM Plex Sans and Arabic uses IBM Plex Sans Arabic, with bundled 400/500/600/700 WOFF2 faces from Google Fonts and their OFL license. Fonts are served from the application origin with no runtime Google Fonts requests. Headings and controls use the same family. All 28 tests pass, including pointer width bounds, independent resizing, persistence, close/reopen and removal of movement controls.

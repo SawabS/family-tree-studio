@@ -1,0 +1,10 @@
+@font-face{font-family:'IBM Plex Sans';font-style:normal;font-weight:400;font-display:swap;src:url('../assets/fonts/plex/sans-400.woff2') format('woff2')}
+@font-face{font-family:'IBM Plex Sans';font-style:normal;font-weight:500;font-display:swap;src:url('../assets/fonts/plex/sans-500.woff2') format('woff2')}
+@font-face{font-family:'IBM Plex Sans';font-style:normal;font-weight:600;font-display:swap;src:url('../assets/fonts/plex/sans-600.woff2') format('woff2')}
+@font-face{font-family:'IBM Plex Sans';font-style:normal;font-weight:700;font-display:swap;src:url('../assets/fonts/plex/sans-700.woff2') format('woff2')}
+@font-face{font-family:'IBM Plex Sans Arabic';font-style:normal;font-weight:400;font-display:swap;src:url('../assets/fonts/plex/sans-arabic-400.woff2') format('woff2')}
+@font-face{font-family:'IBM Plex Sans Arabic';font-style:normal;font-weight:500;font-display:swap;src:url('../assets/fonts/plex/sans-arabic-500.woff2') format('woff2')}
+@font-face{font-family:'IBM Plex Sans Arabic';font-style:normal;font-weight:600;font-display:swap;src:url('../assets/fonts/plex/sans-arabic-600.woff2') format('woff2')}
+@font-face{font-family:'IBM Plex Sans Arabic';font-style:normal;font-weight:700;font-display:swap;src:url('../assets/fonts/plex/sans-arabic-700.woff2') format('woff2')}
+:root{--ui-font:'IBM Plex Sans','IBM Plex Sans Arabic',system-ui,sans-serif;font-family:var(--ui-font)}body,button,input,select,textarea{font-family:var(--ui-font)}.empty-board h1,.dialog h2{font-family:var(--ui-font);font-weight:500}:lang(ar){font-family:'IBM Plex Sans Arabic','IBM Plex Sans',sans-serif}
+.json{font-family:var(--ui-font)}
