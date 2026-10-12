@@ -46,8 +46,10 @@ export function validate(doc) {
 }
 export function normalize(view) {
   const people=Object.fromEntries(view.people.map(p=>[p.id,{id:p.id,name:p.name,gender:p.gender||'unknown',profile:{...profileDefaults(),...p.profile},position:{...p.position}}]));
+  const ids=new Set();for(const p of view.people){if(ids.has(p.id))bad('Duplicate person');ids.add(p.id);if(!Array.isArray(p.parents)||new Set(p.parents).size!==p.parents.length)bad('Duplicate or malformed parent links')}
   const relations=[...(view.relationships||[])];
-  for(const p of view.people)for(const parent of p.parents||[])if(!relations.some(r=>isParent(r)&&r.person1===parent&&r.person2===p.id))relations.push({id:'parent:'+JSON.stringify([parent,p.id]),type:'parent-unknown',person1:parent,person2:p.id});
+  const relationIDs=new Set();for(const r of relations){if(relationIDs.has(r.id))bad('Duplicate relationship identifier');relationIDs.add(r.id)}
+  for(const p of view.people)for(const parent of p.parents||[])if(!relations.some(r=>isParent(r)&&r.person1===parent&&r.person2===p.id))relations.push({id:crypto.randomUUID(),type:'parent-unknown',person1:parent,person2:p.id});
   return validate({schemaVersion:VERSION,treeId:view.treeId,title:view.title,people,relationships:Object.fromEntries(relations.map(r=>[r.id,r])),settings:{...view.settings}});
 }
 export function project(doc) {

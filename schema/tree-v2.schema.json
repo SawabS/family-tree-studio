@@ -1,0 +1,201 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:kinship-studio:tree:v2",
+  "title": "Kinship Studio normalized tree",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "treeId",
+    "title",
+    "people",
+    "relationships",
+    "settings"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": 2
+    },
+    "treeId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "title": {
+      "type": "string"
+    },
+    "settings": {
+      "type": "object"
+    },
+    "people": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/person"
+      }
+    },
+    "relationships": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/relationship"
+      }
+    }
+  },
+  "$defs": {
+    "person": {
+      "type": "object",
+      "required": [
+        "id",
+        "name",
+        "gender",
+        "position",
+        "profile"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "gender": {
+          "enum": [
+            "unknown",
+            "male",
+            "female",
+            "other"
+          ]
+        },
+        "profile": {
+          "type": "object",
+          "properties": {
+            "preferredName": {
+              "type": "string"
+            },
+            "birthDate": {
+              "type": "string"
+            },
+            "deathDate": {
+              "type": "string"
+            },
+            "birthPlace": {
+              "type": "string"
+            },
+            "residence": {
+              "type": "string"
+            },
+            "occupation": {
+              "type": "string"
+            },
+            "email": {
+              "type": "string"
+            },
+            "phone": {
+              "type": "string"
+            },
+            "biographyMarkdown": {
+              "type": "string"
+            },
+            "notesMarkdown": {
+              "type": "string"
+            },
+            "photoDataUrl": {
+              "type": "string"
+            },
+            "customFields": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"
+              }
+            },
+            "attachments": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": [
+                  "id",
+                  "name",
+                  "dataUrl"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "dataUrl": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "references": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": [
+                  "label",
+                  "url"
+                ],
+                "properties": {
+                  "label": {
+                    "type": "string"
+                  },
+                  "url": {
+                    "type": "string",
+                    "pattern": "^https?://"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "position": {
+          "type": "object",
+          "required": [
+            "x",
+            "y"
+          ],
+          "properties": {
+            "x": {
+              "type": "number"
+            },
+            "y": {
+              "type": "number"
+            }
+          }
+        }
+      }
+    },
+    "relationship": {
+      "type": "object",
+      "required": [
+        "id",
+        "type",
+        "person1",
+        "person2"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "person1": {
+          "type": "string"
+        },
+        "person2": {
+          "type": "string"
+        },
+        "type": {
+          "enum": [
+            "parent-unknown",
+            "biological",
+            "adoptive",
+            "guardian",
+            "other-parent",
+            "partner",
+            "spouse"
+          ]
+        }
+      }
+    }
+  }
+}
