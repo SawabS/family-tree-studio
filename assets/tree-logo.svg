@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Kinship Studio tree">
+  <ellipse cx="32" cy="58" rx="20" ry="3" fill="#dbe8c9"/>
+  <path d="M27 34h10l-1 13c0 5 3 8 7 11H21c5-3 8-7 8-11Z" fill="#885936"/>
+  <path d="m31 43-11-8 3-4 10 8 10-9 3 4-11 10v12h-4Z" fill="#a67145"/>
+  <path d="M14 41a12 12 0 0 1-8-21A13 13 0 0 1 23 9a13 13 0 0 1 22 0 13 13 0 0 1 13 14 11 11 0 0 1-7 19c-5 5-12 4-17 1-7 4-15 3-20-2Z" fill="#34804d"/>
+  <circle cx="17" cy="25" r="12" fill="#54a860"/>
+  <circle cx="29" cy="15" r="12" fill="#6bbd69"/>
+  <circle cx="43" cy="21" r="13" fill="#4b9e55"/>
+  <circle cx="49" cy="31" r="10" fill="#57ac5b"/>
+  <circle cx="31" cy="30" r="14" fill="#63b966"/>
+  <circle cx="18" cy="34" r="10" fill="#58aa57"/>
+  <path d="M22 13c3-4 7-5 10-4M11 23c0-3 2-5 4-6" fill="none" stroke="#b9e89b" stroke-width="3" stroke-linecap="round" opacity=".8"/>
+</svg>
