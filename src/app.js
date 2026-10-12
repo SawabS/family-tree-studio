@@ -1,5 +1,5 @@
 import {bindProfileField} from './profile-fields.js';
-import {initChrome} from './chrome.js?v=qa-7';
+import {initChrome} from './chrome.js?v=qa-8';
 import {icon} from './icons.js';
 import {preparePhoto} from './photo.js';
 import {emptyTree, profileDefaults, normalize, project, migrate, arrange, isParent, kinds} from './model.js';

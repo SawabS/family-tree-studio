@@ -12,7 +12,7 @@ export function initChrome(){
   function close(options={}){const side=options.side||current;if(!side)return;sides[side].visible=false;if(current===side)current=null;sync();if(options.restoreFocus!==false){const target=returnFocus?.isConnected&&!returnFocus.closest('[inert]')?returnFocus:sides[side].trigger;target.focus({preventScroll:true})}returnFocus=null;}
   function open(side){returnFocus=document.activeElement;if(compact())for(const item of Object.values(sides))item.visible=false;sides[side].visible=true;current=side;if(!compact()){setWidth('left',sides.left.width,false);setWidth('right',sides.right.width,false)}sync();sides[side].close.focus({preventScroll:true});}
   function toggle(side){sides[side].visible?close({side}):open(side)}
-  function maxWidth(side){const other=sides[side==='left'?'right':'left'];return Math.max(200,Math.min(560,window.innerWidth-(other.visible?other.width:0)-280))}
+  function maxWidth(side){const other=sides[side==='left'?'right':'left'];return Math.max(200,Math.min(560,window.innerWidth-(other.visible?other.width:0)-320))}
   function setWidth(side,value,persist=true){sides[side].width=Math.max(200,Math.min(maxWidth(side),value));sync();if(persist)try{window.localStorage.setItem('kinship.panelWidths',JSON.stringify({left:sides.left.width,right:sides.right.width}))}catch{}}
   for(const [side,item] of Object.entries(sides)){
     item.trigger.onclick=()=>toggle(side);item.close.onclick=()=>close({side});

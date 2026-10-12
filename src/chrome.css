@@ -50,3 +50,5 @@ html,body{background:var(--page);color:var(--ink)}.app{position:relative;isolati
 :root[data-theme="light"] .field-error{color:#9a3030}
 
 #rightToggle,#rightToggle:hover{background:transparent;border-color:transparent;box-shadow:none}#rightToggle[aria-expanded="true"]{color:var(--accent)}
+
+@media(min-width:761px){.mini{bottom:84px}.float-tools{max-width:calc(100% - 24px)}}

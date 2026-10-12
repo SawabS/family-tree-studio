@@ -6,7 +6,7 @@ Profile keyboard/focus repair, mobile and laptop functional flows, responsive la
 
 ## Automated checks
 
-32 Node tests pass. New regression cases cover input identity/focus, clearing and retyping names, invalid-draft blur without inspector reconstruction, Arabic IME composition, selection preservation during keyboard-height resize, and preventing sidebar-resize keyboard events from moving a selected person. Existing coverage includes normalized model validation, cycles, migration, layout, PDF geometry/fonts/pagination, photo handling, IndexedDB ordering/recovery, and editor flows.
+33 Node tests pass. New regression cases cover input identity/focus, clearing and retyping names, invalid-draft blur without inspector reconstruction, Arabic IME composition, selection preservation during keyboard-height resize, and preventing sidebar-resize keyboard events from moving a selected person. Existing coverage includes normalized model validation, cycles, migration, layout, PDF geometry/fonts/pagination, photo handling, IndexedDB ordering/recovery, and editor flows.
 
 ## Code review and fixes
 
@@ -36,7 +36,7 @@ Published Chromium checks completed with two explicitly synthetic QA records:
 
 The header inspector icon is now a minimal person outline, with no visible button box. Keyboard focus indication and accessible labeling remain.
 
-Final verification and cleanup will be recorded after the small poster-preview/icon update deploys.
+The poster-preview fix and minimal icon were verified in the published app: invalid margin clears all preview pages and disables export; the header icon has no rectangle, transparent background and transparent border. The A2 landscape PDF downloaded successfully; its contents were inspected and contact details were excluded. A narrow laptop-canvas overlap between minimap and toolbar was found; the minimap is now above the toolbar and resizing preserves at least 320px of canvas. Added a ten-step visualViewport keyboard-animation regression test, preserving focus, selection and panel markup at each step. Final cleanup and layout recheck follow this last adjustment.
 
 ## Qualification limits
 
