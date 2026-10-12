@@ -1,4 +1,4 @@
-import {initChrome} from './chrome.js';
+import {initChrome} from './chrome.js?v=mobile-2';
 import {icon} from './icons.js';
 import {preparePhoto} from './photo.js';
 import {emptyTree, profileDefaults, normalize, project, migrate, arrange, isParent, kinds} from './model.js';
