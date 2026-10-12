@@ -40,3 +40,9 @@ This is a tested development iteration, not completed production qualification.
 - https://www.w3.org/WAI/standards-guidelines/wcag/new-in-22/
 
 Bundled: marked 17.0.5, pdf-lib 1.17.1, fontkit 1.1.1. Library and font licenses are retained in vendor.
+
+## Photograph and branding update
+
+The profile now has a prominent Upload photograph/Change photograph control and a removal button. PNG, JPEG, WebP and GIF inputs up to 15 MB are decoded in the browser, resized to at most 512 pixels on their longest side without enlarging small images, and stored as local JPEG data. Transparency is flattened onto white and GIFs become still images. Portraits appear in the inspector, people list and canvas card. A locally bundled SVG logo and favicon show a fluffy green tree with a brown trunk.
+
+The updated suite has 22 passing tests, including aspect-ratio preservation, size/type rejection, local JPEG preparation and decoder cleanup. Both Pages deployment workflows succeeded. The live browser photo upload and reload-persistence check passed using a disposable synthetic image; its temporary local record was removed. No personal photographs or family records were committed.
