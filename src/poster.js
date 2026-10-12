@@ -31,7 +31,7 @@ export function plan(view, options) {
 
 // Everything a renderer needs to draw the board: curved parent links, partner lines and styled cards.
 // Cards carry the same generation colours and the same caption text as the editor.
-export function board(view) {
+export function board(view, accent) {
   const byID = new Map(view.people.map(p => [p.id, p])), depth = generations(view), children = new Map();
   const kinds = new Map();
   for (const r of view.relationships || []) if (isParent(r)) kinds.set(r.person1 + '\n' + r.person2, r.type);
@@ -51,7 +51,7 @@ export function board(view) {
     links.push({d: `M${x1} ${y1} L${x2} ${y2}`, width: 2, color: style.color, dash: style.dash, box: [Math.min(x1, x2), Math.min(y1, y2), Math.max(x1, x2), Math.max(y1, y2)]});
   }
   const cards = view.people.map(p => {
-    const palette = paletteFor(depth.get(p.id));
+    const palette = paletteFor(depth.get(p.id), accent);
     return {
       person: p, x: p.position.x, y: p.position.y, palette, border: cardBorder(palette), avatarBorder: avatarBorder(palette),
       initial: Array.from(p.name)[0] || '',
@@ -131,7 +131,7 @@ const SANS = "IBM Plex Sans, IBM Plex Sans Arabic, sans-serif";
 const photoOf = (options, person) => options.photos === 'on' && /^data:image\/jpeg;base64,/.test(person.profile?.photoDataUrl || '') ? person.profile.photoDataUrl : '';
 
 export function preview(view, options) {
-  const p = plan(view, options), {links, cards} = board(view), family = options.font === 'serif' ? 'serif' : SANS, pages = [];
+  const p = plan(view, options), {links, cards} = board(view, options.accent), family = options.font === 'serif' ? 'serif' : SANS, pages = [];
   const laid = new Map(cards.map(card => [card, cardLayout(card, Number(options.fontSize), estimateWidth)]));
   for (let row = 0; row < p.rows; row++) for (let col = 0; col < p.cols; col++) {
     const win = windowOf(p, row, col), n = pages.length, page = `${row}-${col}`;
@@ -202,7 +202,7 @@ export async function makePDF(view, options) {
     return response.arrayBuffer();
   };
   const pick = fontSet(doc, options.font, load), {rgb} = lib, mm = 72 / 25.4, color = hex => rgb(...hexToRgb01(hex));
-  const {links, cards} = board(view);
+  const {links, cards} = board(view, options.accent);
 
   // Choose fonts and lay out every card before any page is written, so an unsupported character stops the export early.
   // The ellipsis is included in each choice because long names may be shortened with it.

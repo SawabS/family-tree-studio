@@ -18,15 +18,65 @@ const RAMP = [
 ];
 export const GENERATION_PALETTE = RAMP.map(([bg, ink, muted, avatar]) => Object.freeze({ bg, ink, muted, avatar }));
 
-// Generations deeper than the ramp keep the lightest tone.
-export const paletteFor = depth => GENERATION_PALETTE[Math.max(0, Math.min(GENERATION_PALETTE.length - 1, Math.trunc(Number(depth)) || 0))];
-
 export const hexToRgb01 = hex => [1, 3, 5].map(i => parseInt(hex.slice(i, i + 2), 16) / 255);
 
 // Mix two #rrggbb colours: t = 0 gives a, t = 1 gives b.
 export const mixHex = (a, b, t) => '#' + [1, 3, 5].map(i => Math.round(parseInt(a.slice(i, i + 2), 16) * (1 - t) + parseInt(b.slice(i, i + 2), 16) * t).toString(16).padStart(2, '0')).join('');
 
 // Card and avatar outlines are derived from the card colours so the printed result matches the screen.
+
+const toHex = (r, g, b) => '#' + [r, g, b].map(v => Math.round(Math.max(0, Math.min(1, v)) * 255).toString(16).padStart(2, '0')).join('');
+function hsl(h, sat, light) {
+  sat /= 100; light /= 100;
+  const k = n => (n + h / 30) % 12, a = sat * Math.min(light, 1 - light), f = n => light - a * Math.max(-1, Math.min(k(n) - 3, 9 - k(n), 1));
+  return toHex(f(0), f(8), f(4));
+}
+const rgbToHsl = hex => {
+  const [r, g, b] = hexToRgb01(hex), max = Math.max(r, g, b), min = Math.min(r, g, b), l = (max + min) / 2, d = max - min;
+  return { s: d ? d / (1 - Math.abs(2 * l - 1)) * 100 : 0, l: l * 100 };
+};
+const luminance = hex => { const [r, g, b] = hexToRgb01(hex).map(v => v <= 0.04045 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4); return 0.2126 * r + 0.7152 * g + 0.0722 * b };
+export const contrastRatio = (a, b) => { const [x, y] = [luminance(a), luminance(b)].sort((p, q) => q - p); return (x + 0.05) / (y + 0.05) };
+
+// Other accents reuse the lightness and softness of the green ramp and change only the hue, so every accent
+// has the same depth cues. Text colours are then derived from each card so contrast stays above 4.5:1.
+function rampFor(hue) {
+  return RAMP.map(([bg]) => {
+    const { s, l } = rgbToHsl(bg), card = hsl(hue, Math.min(s, 46), l);
+    const light = hsl(hue, 30, 96), dark = hsl(hue, 45, 9);
+    const ink = contrastRatio(light, card) >= contrastRatio(dark, card) ? light : dark;
+    let muted = ink; for (let t = 0.5; t >= 0; t -= 0.02) { const m = mixHex(ink, card, t); if (contrastRatio(m, card) >= 4.6) { muted = m; break } }
+    let avatar = card; for (let t = 0.2; t >= 0; t -= 0.02) { const a = mixHex(card, ink, t); if (contrastRatio(ink, a) >= 4.6) { avatar = a; break } }
+    return Object.freeze({ bg: card, ink, muted, avatar });
+  });
+}
+
+// Seven pastel accents, one per colour of the rainbow. Green is the original hand tuned ramp.
+const ACCENT_DEFS = [
+  ['rose', 'Rose', 350], ['apricot', 'Apricot', 24], ['lemon', 'Lemon', 48], ['green', 'Green', 150],
+  ['sky', 'Sky', 207], ['periwinkle', 'Periwinkle', 236], ['lavender', 'Lavender', 276],
+];
+export const ACCENTS = Object.freeze(ACCENT_DEFS.map(([id, name, hue]) => {
+  const palette = id === 'green' ? GENERATION_PALETTE : rampFor(hue);
+  const flow = id === 'green' ? ['#8df2c0', '#5fd9a4', '#12a56b', '#1a8a5c'] : [hsl(hue, 78, 78), hsl(hue, 60, 66), hsl(hue, 62, 36), hsl(hue, 58, 31)];
+  return Object.freeze({ id, name, hue, palette, swatch: palette[4].bg, flow: flow[0], line: flow[1], flowLight: flow[2], lineLight: flow[3] });
+}));
+export const DEFAULT_ACCENT = 'green';
+export const accentOf = id => ACCENTS.find(a => a.id === id) || ACCENTS.find(a => a.id === DEFAULT_ACCENT);
+
+// Generations deeper than the ramp keep the lightest tone.
+export const paletteFor = (depth, accent = DEFAULT_ACCENT) => {
+  const ramp = accentOf(accent).palette;
+  return ramp[Math.max(0, Math.min(ramp.length - 1, Math.trunc(Number(depth)) || 0))];
+};
+
+// CSS for the glow, line and arrival colours of an accent in both themes.
+export const accentCSS = a => {
+  const rgba = (hex, al) => hex + Math.round(al * 255).toString(16).padStart(2, '0');
+  const block = (f, l) => `--flow:${f};--flow-soft:${rgba(f, .4)};--flow-glow:${rgba(f, .7)};--branch-line:${l};--arrive-peak:0 0 0 3px ${rgba(f, .8)},0 0 30px 4px ${rgba(f, .67)};--arrive-rest:0 0 0 2px ${rgba(f, .4)},0 0 12px ${rgba(f, .33)}`;
+  return `:root{${block(a.flow, a.line)}}:root[data-theme="light"]{${block(a.flowLight, a.lineLight)}}`;
+};
+
 export const cardBorder = c => mixHex(c.bg, c.ink, 0.24);
 export const avatarBorder = c => mixHex(c.avatar, c.ink, 0.28);
 

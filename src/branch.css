@@ -17,9 +17,9 @@
 /* Lines inside the branch: one solid curve with a soft halo and a pulse of light travelling parent to child. */
 .links .dimmed{opacity:.55}
 .links .branch-halo,.links .branch-line,.links .branch-pulse{fill:none;stroke-linecap:round;stroke-linejoin:round}
-.links .branch-halo{stroke:var(--flow);stroke-opacity:.2;stroke-width:10}
-.links .branch-line{stroke:var(--branch-line);stroke-width:4}
-.links .branch-pulse{stroke:var(--flow);stroke-width:6;stroke-dasharray:14 1000;stroke-dashoffset:14;filter:drop-shadow(0 0 4px var(--flow));animation:kin-flow var(--flow-cycle,3s) linear infinite}
+.links .branch-halo{stroke:var(--flow);stroke-opacity:.16;stroke-width:9}
+.links .branch-line{stroke:var(--branch-line);stroke-width:3.5;stroke-opacity:.9}
+.links .branch-pulse{stroke:var(--flow);stroke-width:5;stroke-dasharray:14 1000;stroke-dashoffset:14;filter:drop-shadow(0 0 5px var(--flow-glow));animation:kin-flow var(--flow-cycle,3s) linear infinite}
 
 /* Reduced motion keeps the bold solid highlight but removes every moving part. */
 @media(prefers-reduced-motion:reduce){.links .branch-pulse{display:none}#nodes .node.in-branch{animation:none}}
@@ -28,3 +28,11 @@
 .field.check{display:flex;align-items:center;gap:10px;font-weight:500}
 .field.check input{width:auto;min-height:0;flex:0 0 auto}
 .poster-layout .photo-hint{margin:-4px 0 4px;text-align:left}
+
+/* Accent picker: seven pastel swatches above the board tools. */
+.emoji-icon{font-size:18px;line-height:1;font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif}
+.accent-menu{position:absolute;left:50%;transform:translateX(-50%);bottom:calc(80px + env(safe-area-inset-bottom,0px));z-index:6;display:flex;gap:8px;padding:9px 11px;border-radius:16px;background:var(--panel);border:1px solid var(--line);box-shadow:0 10px 28px var(--shadow);max-width:calc(100% - 24px)}
+.accent-menu[hidden]{display:none}
+.accent-menu button{width:30px;height:30px;min-height:0;padding:0;border-radius:50%;border:2px solid transparent;background:linear-gradient(135deg,var(--sw-light) 0 40%,var(--sw) 40% 100%);box-shadow:inset 0 0 0 1px #00000026;cursor:pointer}
+.accent-menu button[aria-pressed="true"]{border-color:var(--ink);box-shadow:0 0 0 2px var(--panel),inset 0 0 0 1px #00000026}
+.accent-menu button:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
