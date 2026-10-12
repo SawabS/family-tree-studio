@@ -1,5 +1,8 @@
 export function initChrome(){
-  const root=document.documentElement;root.dataset.theme='dark';
+  const root=document.documentElement,themeButton=document.querySelector('#themeToggle');
+  function applyTheme(theme){root.dataset.theme=theme;themeButton.setAttribute('aria-pressed',String(theme==='dark'));themeButton.setAttribute('aria-label',theme==='dark'?'Switch to light theme':'Switch to dark theme');themeButton.title=themeButton.getAttribute('aria-label')}
+  applyTheme(root.dataset.theme==='light'?'light':'dark');
+  themeButton.onclick=()=>{const value=root.dataset.theme==='dark'?'light':'dark';applyTheme(value);try{window.localStorage.setItem('kinship.theme',value)}catch{}};
   const left=document.querySelector('#leftPanel'),right=document.querySelector('#rightPanel'),overlay=document.querySelector('#mobileOverlay'),leftToggle=document.querySelector('#leftToggle'),rightToggle=document.querySelector('#rightToggle');
   let current=null,returnFocus=null;
   const width=()=>window.innerWidth;
