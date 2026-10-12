@@ -23,7 +23,7 @@ test('DOM integration: startup, creation, profile, relations, undo, backup migra
   click('[data-tab="data"]');data=JSON.parse($('#liveJson').textContent);assert.equal(Object.keys(data.relationships).length,1);
   click('#undoTop');click('[data-tab="data"]');data=JSON.parse($('#liveJson').textContent);assert.equal(Object.keys(data.relationships).length,0);
   click('#redoFloat');click('[data-tab="data"]');data=JSON.parse($('#liveJson').textContent);assert.equal(Object.keys(data.relationships).length,1);
-  change('#treeTitle','Example poster');assert.equal($('#treeTitle').value,'Example poster');click('#posterBtn');assert.equal($('#posterDialog').hasAttribute('open'),true);assert.ok($('#posterPreview svg'));assert.ok($('#posterSummary').textContent.includes('1 page'));
+  change('#treeTitle','Example poster');assert.equal($('#treeTitle').value,'Example poster');click('#posterBtn');assert.equal($('#posterDialog').hasAttribute('open'),true);assert.ok($('#posterPreview svg'));assert.ok($('#posterSummary').textContent.includes('1 page'));change('#posterForm [name="margin"]','200','input');assert.equal($('#posterPreview').childElementCount,0);assert.ok($('#downloadPdf').disabled);assert.ok($('#posterSummary').textContent.includes('Preview unavailable'));change('#posterForm [name="margin"]','15','input');assert.ok($('#posterPreview svg'));
   const {read}=await import('../src/storage.js');for(let i=0;i<20;i++){const saved=await read();if(saved?.title==='Example poster')break;await new Promise(r=>setTimeout(r,10))}assert.equal((await read()).title,'Example poster');
   dom.window.close();
 });

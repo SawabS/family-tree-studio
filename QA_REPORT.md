@@ -19,7 +19,24 @@ Profile keyboard/focus repair, mobile and laptop functional flows, responsive la
 
 ## Live checks
 
-Pending deployment of this iteration. Final results will be recorded after browser verification.
+Published Chromium checks completed with two explicitly synthetic QA records:
+
+| Area | Executed result |
+| --- | --- |
+| Phone profile focus | Clear name, sequential English/Arabic typing, Home/Arrow caret movement, invalid draft blur, native Tab to next field: focus and input identity retained |
+| Profile contents | Preferred name, location, email, phone, Markdown preview, custom fields and HTTP references: saved and preserved after reload |
+| Relationships | New child defaulted to unspecified parent type; ancestry-cycle attempt rejected; removed/recreated adoptive link; undo/redo passed |
+| Canvas | Zoom out, fit and auto layout passed |
+| Sidebars and themes | Laptop width changes, close/reopen, search, light/dark toggle passed; phone panels remained fullscreen |
+| Responsive layouts | 320x640, 375x740, 430x850, 844x390, 1024x768, 1280x800, 1440x900: body width equals viewport width; toolbar fits |
+| Poster controls | All eight A1–A4/orientation previews had correct dimensions; 500% tiled A4 preview produced three pages |
+| Validation | Invalid poster margin disabled export; review found stale preview remained visible and this was fixed with regression coverage; unsafe reference URL rejected |
+| JSON backup | Downloaded schema-v2 JSON inspected: two QA records and one adoptive relationship |
+| Photos/attachments/import | Live file upload denied by browser permission policy; no workaround attempted. Automated photo, attachment-preservation and import-validation coverage passes |
+
+The header inspector icon is now a minimal person outline, with no visible button box. Keyboard focus indication and accessible labeling remain.
+
+Final verification and cleanup will be recorded after the small poster-preview/icon update deploys.
 
 ## Qualification limits
 

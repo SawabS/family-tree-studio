@@ -1,5 +1,5 @@
 import {bindProfileField} from './profile-fields.js';
-import {initChrome} from './chrome.js?v=keyboard-6';
+import {initChrome} from './chrome.js?v=qa-7';
 import {icon} from './icons.js';
 import {preparePhoto} from './photo.js';
 import {emptyTree, profileDefaults, normalize, project, migrate, arrange, isParent, kinds} from './model.js';
@@ -76,7 +76,7 @@ function renderRelations(root,p){
   $('#relationAddChild').onclick=()=>addPerson(p.id);
 }
 function posterOptions(){return Object.fromEntries(new FormData($('#posterForm')))}
-function refreshPoster(){try{const result=preview(state,posterOptions());$('#posterPreview').innerHTML=result.pages.join('');$('#posterSummary').textContent=`${result.plan.count} page${result.plan.count===1?'':'s'} · ${result.plan.w} × ${result.plan.h} mm · all connections included`;$('#posterError').textContent='';$('#downloadPdf').disabled=false;$('#downloadSvg').disabled=false}catch(e){$('#posterError').textContent=e.message;$('#downloadPdf').disabled=true;$('#downloadSvg').disabled=true}}
+function refreshPoster(){try{const result=preview(state,posterOptions());$('#posterPreview').innerHTML=result.pages.join('');$('#posterSummary').textContent=`${result.plan.count} page${result.plan.count===1?'':'s'} · ${result.plan.w} × ${result.plan.h} mm · all connections included`;$('#posterError').textContent='';$('#downloadPdf').disabled=false;$('#downloadSvg').disabled=false}catch(e){$('#posterError').textContent=e.message;$('#posterPreview').replaceChildren();$('#posterSummary').textContent='Preview unavailable · correct the settings above';$('#downloadPdf').disabled=true;$('#downloadSvg').disabled=true}}
 function openPoster(){if(!state.people.length){toast('Add a person first');return}$('#posterForm').elements.title.value=state.title;refreshPoster();$('#posterDialog').showModal()}
 $('#posterForm').oninput=refreshPoster;$('#posterForm').onsubmit=e=>e.preventDefault();
 $('#downloadPdf').onclick=async()=>{const b=$('#downloadPdf');b.disabled=true;b.textContent='Preparing vector PDF…';try{const bytes=await makePDF(state,posterOptions());download('kinship-poster.pdf',bytes,'application/pdf');toast('PDF saved. It contains private family information.')}catch(e){$('#posterError').textContent=e.message}finally{b.disabled=false;b.textContent='Download vector PDF'}};
