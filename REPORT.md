@@ -14,7 +14,7 @@ Vector PDF posters include names, dates and connections; A1–A4; both orientati
 
 The supplied private dataset was extracted outside Git. A comparison confirmed preservation of all 19 people, names and identifiers and all 18 parent links; the input has no other relationships. The separate private archive contains the original project, untouched JSON and a normalized importable backup. None is included in source or deployment. No demonstration dataset was approved, so startup is empty. Browser assets and fonts are bundled, Markdown does not fetch remote images, and a content security policy limits resource loads. Records and backups are not encrypted.
 
-The retained Actions workflow now runs npm ci, tests and an allowlisted build before deploying only dist. Git is initialized on main with incremental local commits. No repository has been created/pushed and no live URL exists: the connector lacks repository creation and Pages administration. Signed-in browser fallback requires user approval. Repository visibility has not been changed.
+The retained Actions workflow now runs npm ci, tests and an allowlisted build before deploying only dist. The owner created https://github.com/SawabS/family-tree-studio as public. All three incremental development commits have been imported into main after the owner’s initial README commit. All 18 tests and the allowlisted build passed in GitHub Actions. The initial deployment run stopped at configure-pages because Pages has not yet been enabled. No live URL is verified. The connector lacks Pages administration; the owner must select GitHub Actions under Settings > Pages once. No private backup was uploaded and the agent did not change repository visibility.
 
 ## Executed tests
 
@@ -24,7 +24,7 @@ Generated PDF output was rendered with Poppler and inspected for basic layout an
 
 ## Remaining qualification and limitations
 
-GitHub deployment, Pages eligibility and live desktop/mobile checks await repository-creation access. Real browser/touch testing, visual regression, assistive-technology checks and large-tree frame-rate measurements are unperformed. Desktop, tablet and mobile CSS is implemented but actual browser layouts are unverified.
+GitHub source publication is complete. Pages deployment and live desktop/mobile checks await the owner enabling GitHub Actions under repository Settings > Pages. Real browser/touch testing, visual regression, assistive-technology checks and large-tree frame-rate measurements are unperformed. Desktop, tablet and mobile CSS is implemented but actual browser layouts are unverified.
 
 Layout separates generations and orders siblings by parent positions; it does not optimize partnerships or crossing counts. Cards are not virtualized; rendering and full-tree validation need large-tree profiling despite the 20,000-person cap. Undo snapshots can be expensive with attachments. Inline base64 attachments are limited to 10 MB each; JSON imports to 100 MB.
 

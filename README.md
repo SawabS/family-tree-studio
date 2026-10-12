@@ -13,7 +13,9 @@ npm run build
 npm run dev
 ```
 
-The local server listens on localhost:5173. For GitHub Pages, create a private repository, push main, then select Actions as the Pages source. Private-repository Pages requires a compatible paid GitHub plan. Never change repository visibility without the owner's approval. The Actions job tests and publishes only the allowlisted dist directory.
+The local server listens on localhost:5173. The source is maintained at https://github.com/SawabS/family-tree-studio. The owner created this repository as public; it contains only the application shell and tests, never personal records.
+
+To enable deployment, open repository Settings > Pages. Under Build and deployment, choose GitHub Actions as Source. After saving, re-run the Deploy GitHub Pages workflow (or push a new commit). The current workflow already passes all 18 tests and builds successfully; its initial deployment stopped because Pages was not yet enabled. Private-repository Pages requires a compatible paid GitHub plan. Never change repository visibility without the owner's approval. The Actions job tests and publishes only the allowlisted dist directory.
 
 ## Privacy
 
