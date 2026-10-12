@@ -73,8 +73,8 @@ export const paletteFor = (depth, accent = DEFAULT_ACCENT) => {
 // CSS for the glow, line and arrival colours of an accent in both themes.
 export const accentCSS = a => {
   const rgba = (hex, al) => hex + Math.round(al * 255).toString(16).padStart(2, '0');
-  const block = (f, l) => `--flow:${f};--flow-soft:${rgba(f, .4)};--flow-glow:${rgba(f, .7)};--branch-line:${l};--arrive-peak:0 0 0 3px ${rgba(f, .8)},0 0 30px 4px ${rgba(f, .67)};--arrive-rest:0 0 0 2px ${rgba(f, .4)},0 0 12px ${rgba(f, .33)}`;
-  return `:root{${block(a.flow, a.line)}}:root[data-theme="light"]{${block(a.flowLight, a.lineLight)}}`;
+  const block = (f, l) => `--flow:${f};--flow-soft:${rgba(f, .4)};--flow-glow:${rgba(f, .7)};--branch-line:${l};--arrive-peak:0 0 0 2px ${rgba(f, .8)},0 0 26px 3px ${rgba(f, .67)};--arrive-rest:0 0 0 1px ${rgba(f, .4)},0 0 12px ${rgba(f, .33)}`;
+  return `:root{--accent-h:${a.hue};${block(a.flow, a.line)}}:root[data-theme="light"]{${block(a.flowLight, a.lineLight)}}`;
 };
 
 export const cardBorder = c => mixHex(c.bg, c.ink, 0.24);
