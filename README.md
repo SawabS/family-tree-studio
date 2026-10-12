@@ -15,7 +15,11 @@ npm run dev
 
 The local server listens on localhost:5173. The source is maintained at https://github.com/SawabS/family-tree-studio. The owner created this repository as public; it contains only the application shell and tests, never personal records.
 
-To enable deployment, open repository Settings > Pages. Under Build and deployment, choose GitHub Actions as Source. After saving, re-run the Deploy GitHub Pages workflow (or push a new commit). The current workflow already passes all 18 tests and builds successfully; its initial deployment stopped because Pages was not yet enabled. Private-repository Pages requires a compatible paid GitHub plan. Never change repository visibility without the owner's approval. The Actions job tests and publishes only the allowlisted dist directory.
+Live website: https://sawabs.github.io/family-tree-studio/
+
+The owner enabled GitHub Pages from main and the root directory. GitHub’s branch publishing workflow deployed successfully. The supplied custom Actions workflow is retained; using its test-and-build deployment requires choosing GitHub Actions as the Pages Source. Branch publishing does not wait for this custom workflow’s tests.
+
+Private-repository Pages requires a compatible paid GitHub plan. Never change repository visibility without the owner's approval. The Actions job tests and publishes only the allowlisted dist directory.
 
 ## Privacy
 
